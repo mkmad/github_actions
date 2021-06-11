@@ -1,6 +1,6 @@
-commands to checkout to this branch
+## Checklist
 
-```
-git fetch upstream pull/{pull_id}/head:{branch_name}
-git checkout {branch_name}
-```
+- [x] service1.
+- [x] service2.
+- [x] service3.
+- [x] service4.
