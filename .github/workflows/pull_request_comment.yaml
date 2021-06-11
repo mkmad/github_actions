@@ -1,8 +1,8 @@
-name: Add checkout commands
+name: Add Pull request comments
 on: pull_request
 jobs:
   comment:
-    name: Add checkout commands
+    name: Add Pull request comments
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master

@@ -1,6 +1,6 @@
-## Checklist
+## List the services you would like to deployt
 
-- [x] service1.
-- [x] service2.
-- [x] service3.
-- [x] service4.
+- [ ] service1.
+- [ ] service2.
+- [ ] service3.
+- [ ] service4.
