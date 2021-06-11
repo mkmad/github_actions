@@ -35,4 +35,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           filename: template.md          
-        if: steps.check.outputs.triggered == 'true'     
+        if: steps.check.outputs.triggered == 'true'  
+        
+  eyes2:
+    runs-on: ubuntu-latest
+    steps:
+      # Need to be the first step
+      - uses: kilimangaro/action-comment-trigger@v1
+        # id is needed to check outputs (see following steps)
+        id: check-comment
+        with:
+          trigger: "/list2"
+
+      # We can now check for condition
+      - uses: actions/checkout@master
+        if: steps.check-comment.outputs.triggered == 'true'
+      - uses: harupy/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: template.md   
+        if: steps.check-comment.outputs.triggered == 'true'        
