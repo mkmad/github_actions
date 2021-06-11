@@ -1,0 +1,27 @@
+name: Chatops Command
+on:
+  repository_dispatch:
+    types: [hello-world-local-command]
+jobs:
+  helloWorld:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: hooray
+
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+          body: |
+            Hello @${{ github.event.client_payload.github.actor }}!
+
+            ## List the services you would like to deploy
+
+            - [ ] service1.
+            - [ ] service2.
+            - [ ] service3.
+            - [ ] service4.
