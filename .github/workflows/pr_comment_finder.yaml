@@ -1,0 +1,19 @@
+name: Pull Request Comment Finder
+on:
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Find Comment
+          uses: peter-evans/find-comment@v1
+          id: fc
+          with:
+            issue-number: 4
+            body-includes: List the services you would like to deploy
+            direction: last
+            token: '${{ secrets.GITHUB_TOKEN }}'
