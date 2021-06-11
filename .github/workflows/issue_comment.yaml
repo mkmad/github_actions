@@ -1,7 +1,10 @@
 name: Issue_Comment
 on:
+  pull_request:
+    types: [opened]
   issue_comment:
     types: [created]
+    
 jobs:
   tests:
     if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/testthis')
