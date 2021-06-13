@@ -34,7 +34,7 @@ jobs:
       - name: comment PR
         run: |
           # send reaction to comment to show build was triggered
-          curl  "https://api.github.com/repos/${{github.repository_owner}}/${{github.repository}}/issues/${{github.issue.number}}/comments" \
+          curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
             -X POST \
             -d '{"body":"
                     Hello @${{ github.event.client_payload.github.actor }}!
