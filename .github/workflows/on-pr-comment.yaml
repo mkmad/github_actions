@@ -39,3 +39,26 @@ jobs:
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}" \
             -d '{"body": "Hello @${{ github.event.comment.user.login }}!\nList the services you would like to deploy:\n- [ ] service1.\n- [ ] service2.\n- [ ] service3.\n- [ ] service4.\n- [ ] service5.\n- [ ] service6.\n- [ ] service7.\n- [ ] service8.\n- [ ] service9.\n- [ ] service10."}'
+
+  deploy-services:
+    ## Just to react to valid comment with rocket
+    runs-on: ubuntu-latest
+    if: ${{ github.event.comment &&
+          github.event.issue.pull_request &&
+          startsWith(github.event.comment.body, '/deploy') }}
+    steps:
+      -
+        name: Show context
+        run: |
+          cat >/dev/null <<'END'
+            ${{ toJson(github) }}
+          END
+      - 
+        name: Reaction
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"rocket"}' \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Authorization: token ${{github.token}}"
