@@ -38,4 +38,10 @@ jobs:
             -X POST \
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}" \
-            -d '{"body": "Hello @${{ github.event.comment.user.login }}!\nList the services you would like to deploy:\n- [ ] service1."}'
+            -d '{"body": "Hello @${{ github.event.comment.user.login }}!\n
+                          List the services you would like to deploy:\n
+                          - [ ] service1.\n
+                          - [ ] service1.\n
+                          - [ ] service1.\n
+                          - [ ] service1.\n
+                "}'
