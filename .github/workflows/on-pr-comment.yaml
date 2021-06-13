@@ -30,13 +30,11 @@ jobs:
             -d '{"content":"rocket"}' \
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}"
-            
+
       - name: comment PR
-        uses: unsplash/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: mshick/add-pr-comment@v1
         with:
-          msg: |
+          message: |
             Hello @${{ github.event.client_payload.github.actor }}!
 
             ## List the services you would like to deploy
@@ -45,58 +43,6 @@ jobs:
             - [ ] service2.
             - [ ] service3.
             - [ ] service4.             
-
-  prepare:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - run: echo 1111111;
-      - run: echo hello; exit 1
-        continue-on-error: true
-      - run: xxx
-        id: asd
-        if: ${{false}}
-      - run: echo 333333;
-        if: steps.asd.outcome == 'skipped'
-      - run: echo 44444;
-        if: steps.asd.outcome != 'skipped'
-
-  build:
-    runs-on: ubuntu-latest
-    ## Run on each event, but PR comment is checked for key phrase.
-    if: ${{ github.event_name != 'issue_comment' ||
-            ( github.event.issue.pull_request &&
-            startsWith(github.event.comment.body, '/buildme') ) }}
-    steps:
-      -
-        name: Show context
-        run: |
-          cat >/dev/null <<'END'
-            ${{ toJson(github) }}
-          END
-      -
-        name: Show job
-        run: |
-          cat >/dev/null <<'END'
-            ${{ toJson(job) }}
-          END
-      -
-        name: Show needs
-        run: |
-          cat >/dev/null <<'END'
-            ${{ toJson(needs) }}
-          END
-      - #&step_detect_commented_pr
-        name: REF and SHA of commented PR to ENV
-        if: github.event.comment
-        run: >
-            curl -fsSL ${{github.event.issue.pull_request.url}}
-            -H "Authorization: token ${{github.token}}" |
-            jq -r '
-              "PR_REF="+.head.ref, 
-              "PR_SHA="+.head.sha, 
-              "PR_NUM="+(.number|tostring), 
-              "PR_REPO="+.head.repo.full_name' >>$GITHUB_ENV
-      -
-        name: Show git log
-        run: git log --decorate
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
