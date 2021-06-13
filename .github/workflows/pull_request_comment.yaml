@@ -5,17 +5,9 @@ jobs:
     name: Add Pull request comments
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - uses: harupy/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: |
-            Hello @${{ github.event.client_payload.github.actor }}!
-
-            ## List the services you would like to deploy
-
-            - [ ] service1.
-            - [ ] service2.
-            - [ ] service3.
-            - [ ] service4.
+          filename: template.md

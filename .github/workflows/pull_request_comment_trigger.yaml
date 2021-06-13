@@ -16,12 +16,12 @@ jobs:
           reaction: rocket
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - uses: harupy/comment-on-pr@master
+      - name: comment PR
+        uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: |
+          msg: |
             Hello @${{ github.event.client_payload.github.actor }}!
 
             ## List the services you would like to deploy
@@ -30,16 +30,5 @@ jobs:
             - [ ] service2.
             - [ ] service3.
             - [ ] service4. 
-  eyes:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: khan/pull-request-comment-trigger@master
-        id: check
-        with:
-          trigger: '/list'
-          reaction: eyes
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - run: 'echo Found it!'
-        if: steps.check.outputs.triggered == 'true' 
+          check_for_duplicate_msg: false
        
