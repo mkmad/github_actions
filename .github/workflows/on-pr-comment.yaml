@@ -36,15 +36,14 @@ jobs:
           # send reaction to comment to show build was triggered
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
             -X POST \
-            -d '{"body":" Hello @${{ github.event.client_payload.github.actor }}! "}' \
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-            -H "Authorization: token ${{github.token}}"
-            # -d '{"body":"
-            #         Hello @${{ github.event.client_payload.github.actor }}! \
-
-            #         List the services you would like to deploy \
-            #         - [ ] service1.
-            #         - [ ] service2.
-            #         - [ ] service3.
-            #         - [ ] service4.  
-            #     "}' \
+            -H "Authorization: token ${{github.token}}" \
+            -d '{"body": [
+                    "Hello @${{ github.event.comment.user.login }}!",
+                    "List the services you would like to deploy",
+                    "- [ ] service1.",
+                    "- [ ] service2.",
+                    "- [ ] service3.",
+                    "- [ ] service4."
+                    ]
+                }'
