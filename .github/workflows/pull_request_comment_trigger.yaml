@@ -16,8 +16,20 @@ jobs:
           reaction: rocket
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - run: 'echo Found it!'
-        if: steps.check.outputs.triggered == 'true'
+      - uses: harupy/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+          body: |
+            Hello @${{ github.event.client_payload.github.actor }}!
+
+            ## List the services you would like to deploy
+
+            - [ ] service1.
+            - [ ] service2.
+            - [ ] service3.
+            - [ ] service4. 
   eyes:
     runs-on: ubuntu-latest
     steps:
