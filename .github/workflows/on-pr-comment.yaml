@@ -78,7 +78,9 @@ jobs:
         run: |
           echo ${{ steps.fc.outputs.comment-id }}
           echo "${{ steps.fc.outputs.comment-body }}"
-          echo "COMMENT=$(echo '"${{ steps.fc.outputs.comment-body }}"' | grep 'x' |  sed 's/^/deploying /')" >> $GITHUB_ENV
+          echo "$COMMENT"
+        env:
+          COMMENT: $(echo '"${{ steps.fc.outputs.comment-body }}"' | grep 'x' |  sed 's/^/deploying /')
 
       - 
         name: Comment Services
@@ -89,3 +91,5 @@ jobs:
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}" \
             -d '{"body": "${COMMENT}"}'
+        env:
+          COMMENT: $(echo '"${{ steps.fc.outputs.comment-body }}"' | grep 'x' |  sed 's/^/deploying /')
