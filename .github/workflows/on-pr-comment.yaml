@@ -84,6 +84,7 @@ jobs:
       - 
         name: Add comment payload to message file
         run: |
+          echo ""Hello @${{ github.event.comment.user.login }}!" >> message.json
           echo '{"body":"The following services will be deployed:\n\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)'"}' >> message.json
 
       - 
