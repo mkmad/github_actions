@@ -39,7 +39,7 @@ jobs:
             -X POST \
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}" \
-            -d '{"body": "Hello @${{ github.event.comment.user.login }}!\nList the services you would like to deploy:\n- [ ] service1.\n- [ ] service2.\n- [ ] service3.\n- [ ] service4.\n- [ ] service5.\n- [ ] service6.\n- [ ] service7.\n- [ ] service8.\n- [ ] service9.\n- [ ] service10."}'
+            -d '{"body": "Hello @${{ github.event.comment.user.login }}!\nList the services you would like to deploy:\n- [ ] service1\n- [ ] service2\n- [ ] service3\n- [ ] service4\n- [ ] service5\n- [ ] service6\n- [ ] service7\n- [ ] service8\n- [ ] service9\n- [ ] service10\n"}'
 
   deploy-services:
     ## Just to react to valid comment with rocket
@@ -78,7 +78,7 @@ jobs:
         run: |
           echo ${{ steps.fc.outputs.comment-id }}
           echo "${{ steps.fc.outputs.comment-body }}"
-          echo '{"body":"The following services will be deployed:\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying: /' | sed 's/$/\n/' | tr -d '-' | tr '\n' ' ';echo)'"}'
+          echo '{"body":"The following services will be deployed:\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying: /' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)'"}'
       - 
         name: Comment Services
         run: |
@@ -87,4 +87,4 @@ jobs:
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{github.token}}" \
-            -d '{"body":"The following services will be deployed:\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying: /' | sed 's/$/\n/' | tr -d '-' | tr '\n' ' ';echo)'"}'
+            -d '{"body":"The following services will be deployed:\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying: /' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)'"}'
