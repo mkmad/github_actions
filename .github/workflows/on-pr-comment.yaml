@@ -31,7 +31,8 @@ jobs:
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}"
 
-      - name: comment PR
+      - 
+        name: comment PR
         run: |
           # send reaction to comment to show build was triggered
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
@@ -62,3 +63,16 @@ jobs:
             -d '{"content":"rocket"}' \
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}"
+
+      - 
+        name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: fc
+        with: 
+          token: ${{github.token}}
+          issue-number: ${{github.event.issue.number}}
+          body-includes: List the services you would like to deploy
+          direction: last
+      - run: |
+          echo ${{ steps.fc.outputs.comment-id }}
+          echo ${{ steps.fc.outputs.comment-body }}
