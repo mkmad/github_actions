@@ -1,4 +1,0 @@
-hi
-deploying   - [x] service1.
-deploying   - [x] service8.
-deploying   - [x] service10. "
