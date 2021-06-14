@@ -75,4 +75,4 @@ jobs:
           direction: last
       - run: |
           echo ${{ steps.fc.outputs.comment-id }}
-          echo ${{ steps.fc.outputs.comment-body }}
+          echo "${{ steps.fc.outputs.comment-body }}"
