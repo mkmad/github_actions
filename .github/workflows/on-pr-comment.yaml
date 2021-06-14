@@ -78,13 +78,13 @@ jobs:
         run: |
           echo ${{ steps.fc.outputs.comment-id }}
           echo "${{ steps.fc.outputs.comment-body }}"
-          echo '{"body":"The follwing services will be deployd:\\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying /' | sed 's/$/\//n /' | tr -d '-' | tr '//n' ' ';echo)'"}'
+          echo '{"body":"The follwing services will be deployd:\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying /' | sed 's/$/\/n /' | tr -d '-' | tr '/n' ' ';echo)'"}'
       - 
         name: Comment Services
         run: |
           # comment on the pr to list the sevices to be deployed
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
             -X POST \
-            -H "Content-Type: text/xml" \
+            -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{github.token}}" \
-            -d '{"body":"The follwing services will be deployd:\\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying /' | sed 's/$/\//n /' | tr -d '-' | tr '//n' ' ';echo)'"}'
+            -d '{"body":"The follwing services will be deployd:\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying /' | sed 's/$/\/n /' | tr -d '-' | tr '/n' ' ';echo)'"}'
