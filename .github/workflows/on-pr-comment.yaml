@@ -78,7 +78,14 @@ jobs:
         run: |
           echo ${{ steps.fc.outputs.comment-id }}
           echo "${{ steps.fc.outputs.comment-body }}"
-          echo "$(echo '"${{ steps.fc.outputs.comment-body }}"' | grep 'x' |  sed 's/^/deploying /')"
+          echo "Services: $(echo '"${{ steps.fc.outputs.comment-body }}"' | grep 'x' |  sed 's/^/deploying /')"
+
+      - name: Create message file
+        run: |
+          echo "The follwing services will be deployd:" >> message.txt
+          echo "" >> message.txt
+          echo "" >> message.txt
+          echo "$(echo '"${{ steps.fc.outputs.comment-body }}"' | grep 'x' |  sed 's/^/deploying /')" >> message.txt
 
       - 
         name: Comment Services
@@ -86,6 +93,7 @@ jobs:
           # comment on the pr to list the sevices to be deployed
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
             -X POST \
-            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Content-Type: text/xml" \
             -H "Authorization: token ${{github.token}}" \
-            -d '{"body": "The follwing services will be deployd:\n\n'$(echo '"${{ steps.fc.outputs.comment-body }}"' | grep 'x' |  sed 's/^/deploying /')'"}'
+            -d '@message.txt'
+
