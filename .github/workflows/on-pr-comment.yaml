@@ -76,7 +76,7 @@ jobs:
       - run: |
           echo ${{ steps.fc.outputs.comment-id }}
           echo "${{ steps.fc.outputs.comment-body }}"
-          export $COMMENT=${{ steps.fc.outputs.comment-body }} | grep "x" |  sed 's/^/deploying /'
+          export COMMENT=${{ steps.fc.outputs.comment-body }} | grep "x" |  sed 's/^/deploying /'
           echo "${{ COMMENT }}"
           # comment on the pr to list the sevices to be deployed
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
