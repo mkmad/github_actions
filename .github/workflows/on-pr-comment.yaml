@@ -90,10 +90,12 @@ jobs:
       - 
         name: Comment Services
         run: |
+          # Show contents of message file
+          cat message.txt
           # comment on the pr to list the sevices to be deployed
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
             -X POST \
             -H "Content-Type: text/xml" \
             -H "Authorization: token ${{github.token}}" \
-            -d '@message.txt'
+            --data-binary '@message.txt'
 
