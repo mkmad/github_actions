@@ -78,7 +78,7 @@ jobs:
         run: |
           echo ${{ steps.fc.outputs.comment-id }}
           echo "${{ steps.fc.outputs.comment-body }}"
-          echo "COMMENT=$(echo ${{ steps.fc.outputs.comment-body }} | grep 'x' |  sed 's/^/deploying /')" >> $GITHUB_ENV
+          echo "COMMENT=$(echo \"${{ steps.fc.outputs.comment-body }}\" | grep 'x' |  sed 's/^/deploying /')" >> $GITHUB_ENV
 
       - 
         name: Comment Services
