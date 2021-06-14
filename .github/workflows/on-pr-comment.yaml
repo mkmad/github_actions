@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.comment &&
           github.event.issue.pull_request &&
-          startsWith(github.event.comment.body, '/list') }}
+          startsWith(github.event.comment.body, '/list-services') }}
     steps:
       -
         name: Show context
@@ -21,6 +21,7 @@ jobs:
           cat >/dev/null <<'END'
             ${{ toJson(github) }}
           END
+
       - 
         name: Reaction
         run: |
@@ -46,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.comment &&
           github.event.issue.pull_request &&
-          startsWith(github.event.comment.body, '/deploy') }}
+          startsWith(github.event.comment.body, '/deploy-services') }}
     steps:
       -
         name: Show context
@@ -54,6 +55,7 @@ jobs:
           cat >/dev/null <<'END'
             ${{ toJson(github) }}
           END
+
       - 
         name: Reaction
         run: |
@@ -78,9 +80,14 @@ jobs:
         run: |
           echo ${{ steps.fc.outputs.comment-id }}
           echo "${{ steps.fc.outputs.comment-body }}"
-          echo '{"body":"The following services will be deployed:\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' |  sed 's/^/deploying: /' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)'"}' >> message.json
+
       - 
-        name: Comment Services
+        name: Add comment payload to message file
+        run: |
+          echo '{"body":"The following services will be deployed:\n\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)'"}' >> message.json
+
+      - 
+        name: Comment services
         run: |
           # comment on the pr to list the sevices to be deployed
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
@@ -88,3 +95,9 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{github.token}}" \
             --data-binary "@message.json"
+
+      - 
+        name: Remove message file
+        run: |
+            echo "Removing comment payload file: message.json"
+            rm message.json
