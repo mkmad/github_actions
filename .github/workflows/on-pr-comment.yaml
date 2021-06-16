@@ -39,7 +39,7 @@ jobs:
           curl ${{github.event.comment.url}}/reactions \
             -X POST \
             -d '{"content":"eyes"}' \
-            -H "Accept: application/vnd.github.v3+json" \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}"
 
       - 
@@ -63,7 +63,7 @@ jobs:
           EOF
 
           echo "Printing message2.json"
-          cat m.json | envsubst
+          cat message2.json | envsubst
 
       - 
         name: comment PR
@@ -97,7 +97,7 @@ jobs:
           curl ${{github.event.comment.url}}/reactions \
             -X POST \
             -d '{"content":"rocket"}' \
-            -H "Accept: application/vnd.github.v3+json" \
+            -H "application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}"
 
       - 
