@@ -119,7 +119,7 @@ jobs:
 
       - name: print service list comment messages
         run: |
-          echo "CommentID: ${{ steps.fc.outputs.comment-id }}""
+          echo "CommentID: ${{ steps.fc.outputs.comment-id }}"
           echo "${{ steps.fc.outputs.comment-body }}"
 
       - name: creating message file
