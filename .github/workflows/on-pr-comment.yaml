@@ -130,7 +130,7 @@ jobs:
 
           The following services will be deployed:
 
-          $(echo ${{ steps.fc.outputs.comment-body }} | grep 'x')
+          echo ${{ steps.fc.outputs.comment-body }} | grep 'x'
           EOF
 
           # message file
