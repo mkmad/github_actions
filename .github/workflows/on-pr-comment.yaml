@@ -10,6 +10,7 @@ name: pr-chatops
 # TODO: comment back the github action console URL for tracking
 # TODO: handle edge cases ( no services selected, ensure trigger commands start in the begining etc..)
 # TODO: code cleanup, see if you can use env vars, better json files etc
+# TODO: add comments
 
 on:
   issue_comment:
@@ -128,7 +129,7 @@ jobs:
           cat << EOF > service.txt
           Hello @${{ github.event.comment.user.login }}!
           The following services will be deployed:
-          
+
           $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | tr -d '-')
           EOF
 
