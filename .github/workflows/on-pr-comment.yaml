@@ -20,18 +20,16 @@ jobs:
     # list all services in the form of a checklist
     runs-on: ubuntu-latest
     if: ${{ github.event.comment &&
-          github.event.issue.pull_request &&
-          startsWith(github.event.comment.body, '/list-services') }}
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/list-services') }}
     steps:
-      -
-        name: show context
+      - name: show context
         run: |
           cat >/dev/null <<'END'
             ${{ toJson(github) }}
           END
 
-      - 
-        # react to valid comment with eyes
+      - # react to valid comment with eyes
         name: add reation to comment
         run: |
           # send reaction to comment to show build was triggered
@@ -41,8 +39,7 @@ jobs:
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}"
 
-      - 
-        name: creating message file
+      - name: creating message file
         run: |
           # service file
           cat << EOF > service.txt
@@ -72,8 +69,7 @@ jobs:
           echo "Printing message.json"
           cat message.json | envsubst
 
-      - 
-        name: comment services in the pull request
+      - name: comment services in the pull request
         run: |
           # comment on the pr to list the sevices
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
@@ -82,30 +78,27 @@ jobs:
             -H "Authorization: token ${{github.token}}" \
             --data-binary "@message.json"
 
-      - 
-        name: remove service and message files
+      - name: remove service and message files
         run: |
-            echo "Removing service file: service.txt"
-            rm service.txt
-            echo "Removing comment payload file: message.json"
-            rm message.json            
+          echo "Removing service file: service.txt"
+          rm service.txt
+          echo "Removing comment payload file: message.json"
+          rm message.json
 
   deploy-services:
     # deploy all services from the checklist
     runs-on: ubuntu-latest
     if: ${{ github.event.comment &&
-          github.event.issue.pull_request &&
-          startsWith(github.event.comment.body, '/deploy-services') }}
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/deploy-services') }}
     steps:
-      -
-        name: show context
+      - name: show context
         run: |
           cat >/dev/null <<'END'
             ${{ toJson(github) }}
           END
 
-      - 
-        # react to valid comment with rocket
+      - # react to valid comment with rocket
         name: add reation to comment
         run: |
           # send reaction to comment to show build was triggered
@@ -115,24 +108,21 @@ jobs:
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}"
 
-      - 
-        name: find Comment
+      - name: find Comment
         uses: peter-evans/find-comment@v1
         id: fc
-        with: 
+        with:
           token: ${{github.token}}
           issue-number: ${{github.event.issue.number}}
           body-includes: Select the services you would like to deploy
           direction: last
 
-      - 
-        name: print service list comment messages
+      - name: print service list comment messages
         run: |
           echo "CommentID: ${{ steps.fc.outputs.comment-id }}""
           echo "${{ steps.fc.outputs.comment-body }}"
 
-      - 
-        name: creating message file
+      - name: creating message file
         run: |
           # service file
           cat << EOF > service.txt
@@ -151,15 +141,13 @@ jobs:
           EOF
 
           echo "Printing message.json"
-          cat message.json | envsubst          
+          cat message.json | envsubst
 
-      - 
-        name: add comment payload to message file
+      - name: add comment payload to message file
         run: |
           echo '{"body":"Hello @${{ github.event.comment.user.login }}!\nThe following services will be deployed:\n\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)'"}' >> message.json
 
-      - 
-        name: comment services
+      - name: comment services
         run: |
           # comment on the pr to list the sevices to be deployed
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
@@ -168,10 +156,9 @@ jobs:
             -H "Authorization: token ${{github.token}}" \
             --data-binary "@message.json"
 
-      - 
-        name: remove service and message files
+      - name: remove service and message files
         run: |
-            echo "Removing service file: service.txt"
-            rm service.txt
-            echo "Removing comment payload file: message.json"
-            rm message.json   
+          echo "Removing service file: service.txt"
+          rm service.txt
+          echo "Removing comment payload file: message.json"
+          rm message.json
