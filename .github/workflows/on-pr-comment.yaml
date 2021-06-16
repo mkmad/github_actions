@@ -130,13 +130,13 @@ jobs:
 
           The following services will be deployed:
 
-          $({{ steps.fc.outputs.comment-body }} | grep 'x')
+          $(echo ${{ steps.fc.outputs.comment-body }} | grep 'x')
           EOF
 
           # message file
           cat << EOF > message.json
           {
-            "body": "$(cat service.txt | sed 's/$/\\n/' | tr -d '-' | tr -d ' ' | tr '\n' ' ';echo)"
+            "body": "$(cat service.txt | sed 's/$/\\n/' | tr -d ' ' | tr '\n' ' ';echo)"
           }
           EOF
 
