@@ -140,7 +140,7 @@ jobs:
 
           The following services will be deployed:
 
-          $(echo ${{ steps.fc.outputs.comment-body }} | grep 'x' | sed 's/$/\\n/' | tr -d '/list-services')
+          $(echo ${{ steps.fc.outputs.comment-body }} | grep 'x' | tr -d '-')
           EOF
 
 
