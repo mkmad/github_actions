@@ -47,17 +47,17 @@ jobs:
         run: |
           # service file
           cat << EOF > service.json
-            Hello @${{ github.event.comment.user.login }}
+          Hello @${{ github.event.comment.user.login }}
 
-            Select the services you would like to deploy:
-            - [ ] service1
-            - [ ] service2
+          Select the services you would like to deploy:
+          - [ ] service1
+          - [ ] service2
           EOF
 
           # message file
           cat << EOF > message2.json
           {
-            "body": "$(cat service.json |  sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)"
+            "body": "$(cat service.json |  sed 's/$/\\n/' | tr '\n' ' ';echo)"
           }
 
           EOF
@@ -73,7 +73,7 @@ jobs:
             -X POST \
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
             -H "Authorization: token ${{github.token}}" \
-            -d '{"body": "Hello @${{ github.event.comment.user.login }}!\Select the services you would like to deploy:\n- [ ] service1\n- [ ] service2\n- [ ] service3\n- [ ] service4\n- [ ] service5\n- [ ] service6\n- [ ] service7\n- [ ] service8\n- [ ] service9\n- [ ] service10\n"}'
+            -d '{"body": "Hello @${{ github.event.comment.user.login }}!\nSelect the services you would like to deploy:\n- [ ] service1\n- [ ] service2\n- [ ] service3\n- [ ] service4\n- [ ] service5\n- [ ] service6\n- [ ] service7\n- [ ] service8\n- [ ] service9\n- [ ] service10\n"}'
 
   deploy-services:
     # deploy all services from the checklist
