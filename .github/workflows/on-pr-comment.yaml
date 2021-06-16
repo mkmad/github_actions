@@ -127,8 +127,8 @@ jobs:
           # service file
           cat << EOF > service.txt
           Hello @${{ github.event.comment.user.login }}!
-
           The following services will be deployed:
+          
           $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | tr -d '-')
           EOF
 
