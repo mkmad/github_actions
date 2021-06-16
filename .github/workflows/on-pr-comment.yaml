@@ -142,7 +142,7 @@ jobs:
 
           $(echo ${{ steps.fc.outputs.comment-body }} | grep 'x' | tr -d '-')
           EOF
-
+          cat service.txt
 
           # message file
           cat << EOF > message.json
