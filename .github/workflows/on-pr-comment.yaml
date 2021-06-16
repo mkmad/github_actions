@@ -136,16 +136,12 @@ jobs:
           # message file
           cat << EOF > message.json
           {
-            "body": "$(cat service.txt | grep 'x' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)"
+            "body": "$(cat service.txt | grep 'x' | sed 's/$/\\n/' | tr -d '-' | tr -d ' ' | tr '\n' ' ';echo)"
           }
           EOF
 
           echo "Printing message.json"
           cat message.json | envsubst
-
-      - name: add comment payload to message file
-        run: |
-          echo '{"body":"Hello @${{ github.event.comment.user.login }}!\nThe following services will be deployed:\n\n'$(echo '\"${{ steps.fc.outputs.comment-body }}\"' | grep 'x' | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)'"}' >> message.json
 
       - name: comment services
         run: |
