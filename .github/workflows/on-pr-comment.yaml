@@ -140,7 +140,7 @@ jobs:
 
           The following services will be deployed:
 
-          $(echo ${{ steps.fc.outputs.comment-body }})
+          ${{ steps.fc.outputs.comment-body }}
           EOF
 
           # message file
