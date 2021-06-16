@@ -149,7 +149,7 @@ jobs:
           {
             "body": "$(cat service.txt)"
           }
-          EOF          
+          EOF
 
           echo "Printing message.json"
           cat message.json | envsubst          
