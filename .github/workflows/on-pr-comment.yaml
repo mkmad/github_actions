@@ -57,7 +57,7 @@ jobs:
           # message file
           cat << EOF > message2.json
           {
-            "body": "$(cat service.json |  sed 's/$/\\n/' | tr '\n' ' ';echo)"
+            "body": "$(cat service.json |  sed 's/$/\\n/' | tr '\n' '';echo)"
           }
 
           EOF
