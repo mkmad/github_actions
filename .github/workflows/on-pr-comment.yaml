@@ -129,13 +129,13 @@ jobs:
           Hello @${{ github.event.comment.user.login }}!
 
           The following services will be deployed:
-          $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x')
+          $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | tr -d '-')
           EOF
 
           # message file
           cat << EOF > message.json
           {
-            "body": "$(cat service.txt | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)"
+            "body": "$(cat service.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
           }
           EOF
 
