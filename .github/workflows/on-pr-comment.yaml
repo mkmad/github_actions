@@ -135,7 +135,7 @@ jobs:
           # message file
           cat << EOF > message.json
           {
-            "body": "$(cat service.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
+            "body": "$(cat service.txt | sed 's/$/\\n/' | tr -d '-' | tr '\n' ' ';echo)"
           }
           EOF
 
