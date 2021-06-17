@@ -123,6 +123,14 @@ jobs:
           echo "CommentID: ${{ steps.fc.outputs.comment-id }}"
           echo "${{ steps.fc.outputs.comment-body }}"
 
+      - name: check if services are checked
+        run: |
+          # exit workflow if there are no services checked
+          if [[ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ]];
+          then
+            exit 1
+          
+
       - name: creating message file
         run: |
           # service file
