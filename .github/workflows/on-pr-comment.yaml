@@ -11,6 +11,7 @@ name: pr-chatops
 # TODO: handle edge cases ( no services selected, ensure trigger commands start in the begining etc..)
 # TODO: code cleanup, see if you can use env vars, better json files etc
 # TODO: add comments
+# TODO: add help command to list the available chatbot commands
 
 on:
   issue_comment:
@@ -118,7 +119,7 @@ jobs:
         run: |
           # exit workflow if there are no services checked
           echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0'
-          if [[ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ]];
+          if [ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ];
           then
             # send thumbs down reaction to /deploy-services indicating failure
             curl ${{github.event.comment.url}}/reactions \
