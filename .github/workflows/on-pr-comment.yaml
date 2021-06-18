@@ -147,6 +147,7 @@ jobs:
             # remove file and exit workflow
             rm error.txt
             exit 1
+          fi
 
       - # react to valid comment with rocket
         name: add reation to comment
