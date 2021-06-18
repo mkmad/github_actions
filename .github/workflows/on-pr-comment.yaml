@@ -126,7 +126,7 @@ jobs:
               -X POST \
               -d '{"content":"-1"}' \
               -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-              -H "Authorization: token ${{github.token}}"            
+              -H "Authorization: token ${{github.token}}"
 
             # create error file
             cat << EOF > error.txt
@@ -134,7 +134,7 @@ jobs:
 
             No services checked or service list not found!
 
-            Please check at least one service from the service list. 
+            Please check at least one service from the service list.
             Or comment `/list-services` to list the available services.
             EOF
 
@@ -144,7 +144,7 @@ jobs:
               -H "Authorization: token ${{github.token}}" \
               -d '{"body": "$(cat error.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"}'
             
-            # remove file and exit workflow           
+            # remove file and exit workflow
             rm error.txt
             exit 1
 
