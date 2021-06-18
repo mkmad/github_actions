@@ -47,7 +47,7 @@ jobs:
           cat << EOF > service.txt
           Hello @${{ github.event.comment.user.login }}!
 
-          Select the services you would like to deploy:
+          ### Select the services you would like to deploy:
 
           - [ ] service1
           - [ ] service2
@@ -176,7 +176,8 @@ jobs:
           # service file
           cat << EOF > service.txt
           Hello @${{ github.event.comment.user.login }}!
-          The following services will be deployed:
+
+          ### The following services will be deployed:
 
           $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | tr -d '-')
           EOF
