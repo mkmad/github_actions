@@ -83,9 +83,9 @@ jobs:
       - name: remove service and message files
         run: |
           echo "Removing service file: service.txt"
-          rm service.txt
+          [ -e service.txt ] && rm service.txt
           echo "Removing comment payload file: message.json"
-          rm message.json
+          [ -e message.json ] && rm message.json
 
   deploy-services:
     # deploy all services from the checklist
@@ -124,7 +124,14 @@ jobs:
           No services checked or service list not found!
 
           Please check at least one service from the service list.
-          Or comment //list-services to list the available services.
+          Or comment `/list-services` to list the available services.
+          EOF
+
+          # create error json file
+          cat << EOF > error_message.json
+          {
+            "body": "$(cat error.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
+          }
           EOF
 
           # exit workflow if there are no services checked
@@ -142,19 +149,21 @@ jobs:
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               -H "Authorization: token ${{github.token}}" \
-              -d '{"body": "$(cat error.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"}'
-            
-            # remove file and exit workflow
-            rm error.txt
-            exit 1
+              --data-binary "@error_message.json"
+
+            # remove error files and exit workflow
+            [ -e error.txt ] && rm error.txt
+            [ -e error_message.json ] && rm error.json
+            exit 1              
           fi
+
+          # remove error files
+          [ -e error.txt ] && rm error.txt
+          [ -e error_message.json ] && rm error.json
 
       - # react to valid comment with rocket
         name: add reation to comment
         run: |
-          # remove error.txt if it exists in the workspace
-          [ -e error.txt ] && rm error.txt
-
           # send reaction to comment to show build was triggered
           curl ${{github.event.comment.url}}/reactions \
             -X POST \
@@ -194,6 +203,6 @@ jobs:
       - name: remove service and message files
         run: |
           echo "Removing service file: service.txt"
-          rm service.txt
+          [ -e service.txt ] && rm service.txt
           echo "Removing comment payload file: message.json"
-          rm message.json
+          [ -e message.json ] && rm message.json
