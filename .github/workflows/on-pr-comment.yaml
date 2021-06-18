@@ -128,7 +128,7 @@ jobs:
           EOF
 
           # exit workflow if there are no services checked
-          if [ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ];
+          if [ $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0) == 0' ];
           then
             # send thumbs down reaction to /deploy-services indicating failure
             curl ${{github.event.comment.url}}/reactions \
@@ -147,13 +147,14 @@ jobs:
             # remove file and exit workflow
             rm error.txt
             exit 1
-          else
-            rm error.txt
           fi
 
       - # react to valid comment with rocket
         name: add reation to comment
         run: |
+          # remove error.txt if it exists in the workspace
+          [ -e error.txt ] && rm error.txt
+
           # send reaction to comment to show build was triggered
           curl ${{github.event.comment.url}}/reactions \
             -X POST \
