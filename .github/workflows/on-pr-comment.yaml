@@ -134,7 +134,8 @@ jobs:
             No services checked or service list not found!
 
             Please check at least one service from the service list.
-            Or comment /list-services to list the available services. EOF
+            Or comment /list-services to list the available services.
+            EOF
 
             # coment error message
             curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
