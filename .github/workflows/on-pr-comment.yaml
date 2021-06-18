@@ -20,12 +20,12 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/list-services') }}
     steps:
-      - # show github context
-        name: show context
-        run: |
-          cat >/dev/null <<'END'
-            ${{ toJson(github) }}
-          END
+      # - # show github context
+      #   name: show context
+      #   run: |
+      #     cat >/dev/null <<'END'
+      #       ${{ toJson(github) }}
+      #     END
 
       # - # react to list comment with eyes
       #   name: add reation to comment
@@ -65,8 +65,8 @@ jobs:
           }
           EOF
 
-          echo "Printing message.json"
-          cat message.json | envsubst
+          # echo "Printing message.json"
+          # cat message.json | envsubst
 
       - # comment the list of services in the pull request
         name: comment services in the pull request
@@ -93,12 +93,12 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/deploy-services') }}
     steps:
-      - # show github context
-        name: show context
-        run: |
-          cat >/dev/null <<'END'
-            ${{ toJson(github) }}
-          END
+      # - # show github context
+      #   name: show context
+      #   run: |
+      #     cat >/dev/null <<'END'
+      #       ${{ toJson(github) }}
+      #     END
 
       - # find the service list and parse the services to be deployed
         name: find Comment
@@ -186,8 +186,8 @@ jobs:
           }
           EOF
 
-          echo "Printing message.json"
-          cat message.json | envsubst
+          # echo "Printing message.json"
+          # cat message.json | envsubst
 
       - # comment the list of services to be deployed
         name: comment services to be deployed
@@ -214,12 +214,12 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/delete-services') }}
     steps:
-      - # show github context
-        name: show context
-        run: |
-          cat >/dev/null <<'END'
-            ${{ toJson(github) }}
-          END
+      # - # show github context
+      #   name: show context
+      #   run: |
+      #     cat >/dev/null <<'END'
+      #       ${{ toJson(github) }}
+      #     END
 
       # - # react to valid comment with thumbs up
       #   name: add reation to comment
@@ -273,12 +273,12 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/help') }}
     steps:
-      - # show github context
-        name: show context
-        run: |
-          cat >/dev/null <<'END'
-            ${{ toJson(github) }}
-          END
+      # - # show github context
+      #   name: show context
+      #   run: |
+      #     cat >/dev/null <<'END'
+      #       ${{ toJson(github) }}
+      #     END
 
       # - # react to valid comment with thumbs up
       #   name: add reation to comment
