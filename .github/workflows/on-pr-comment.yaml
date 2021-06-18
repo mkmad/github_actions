@@ -128,8 +128,25 @@ jobs:
           # exit workflow if there are no services checked
           if [[ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ]];
           then
+            # create error file
+            cat << EOF > error.txt
+            Hello @${{ github.event.comment.user.login }}!
+
+            No services checked or service list not found!
+
+            Please check at least one service from the service list. 
+            Or comment `/list-services` to list the available services.
+            EOF
+
+            curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token ${{github.token}}" \
+              -d '{"body": "$(cat error.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"}'
+            
+            # remove file            
+            rm error.txt
             exit 1
-          
 
       - name: creating message file
         run: |
