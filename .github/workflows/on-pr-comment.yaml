@@ -7,10 +7,16 @@ name: pr-chatops
 # TODO: spike if Jenkins can trigger an update back to the PR to say deployment/termination is complete
 # TODO: comment back the github action console URL for tracking
 # TODO: code cleanup, see if you can use env vars, better json files etc
+# TODO: implement serial execution, currenty the jobs are parallel
 
 on:
   issue_comment:
     types: [created]
+  workflow_dispatch:
+    inputs:
+      kube_context:
+        description: 'Kube context of the virtual cluster'
+        required: true
 
 jobs:
   list-service:
@@ -110,17 +116,18 @@ jobs:
           body-includes: Select the services you would like to deploy
           direction: last
 
-      - # validate if service list exists
-        name: check if services exist and they are checked
-        run: |
+      - # create error message file template for comment
+        name: creating error message file
+        run: |          
           # create error file
           cat << EOF > error.txt
           ### Hello @${{ github.event.comment.user.login }}!
 
           #### No services checked or service list not found!
 
-          Please check at least one service from the service list.
-          Or comment _/list-services_ to list the available services.
+          * Please check at least one service from the service list.
+          * Or comment _/list-services_ to list the available services.
+          * You can also comment _/help_ to see all the available commands.
           EOF
 
           # create error json file
@@ -129,7 +136,10 @@ jobs:
             "body": "$(cat error.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
           }
           EOF
-
+          
+      - # validate if service list exists
+        name: check if services exist and they are checked
+        run: |
           # exit workflow if there are no services checked
           if [ $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0') ];
           then
@@ -153,9 +163,14 @@ jobs:
             exit 1              
           fi
 
+      - # remove error template files
+        name: remove service and message files
+        run: |
           # remove error files
+          echo "Removing error file: error.txt"
           [ -e error.txt ] && rm error.txt
-          [ -e error_message.json ] && rm error_message.json
+          echo "Removing error json file: error_message.json"
+          [ -e error_message.json ] && rm error_message.json          
 
       - # react to deploy comment with rocket
         name: add reation to comment
@@ -186,8 +201,8 @@ jobs:
           }
           EOF
 
-          # echo "Printing message.json"
-          # cat message.json | envsubst
+          echo "Printing message.json"
+          cat message.json | envsubst
 
       - # comment the list of services to be deployed
         name: comment services to be deployed
@@ -332,3 +347,14 @@ jobs:
           [ -e service.txt ] && rm service.txt
           echo "Removing comment payload file: message.json"
           [ -e message.json ] && rm message.json
+
+  kube-service:
+    # list kube context of a virtual cluster
+    runs-on: ubuntu-latest
+    steps:
+      - # show github context
+        name: show context
+        run: |
+          cat >/dev/null <<'END'
+            ${{ toJson(github) }}
+          END
