@@ -153,13 +153,13 @@ jobs:
 
             # remove error files and exit workflow
             [ -e error.txt ] && rm error.txt
-            [ -e error_message.json ] && rm error.json
+            [ -e error_message.json ] && rm error_message.json
             exit 1              
           fi
 
           # remove error files
           [ -e error.txt ] && rm error.txt
-          [ -e error_message.json ] && rm error.json
+          [ -e error_message.json ] && rm error_message.json
 
       - # react to valid comment with rocket
         name: add reation to comment
