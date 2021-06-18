@@ -351,6 +351,7 @@ jobs:
   kube-service:
     # list kube context of a virtual cluster
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - # show github context
         name: show context
