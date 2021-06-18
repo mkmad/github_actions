@@ -45,7 +45,7 @@ jobs:
         run: |
           # service file
           cat << EOF > service.txt
-          Hello @${{ github.event.comment.user.login }}!
+          ### Hello @${{ github.event.comment.user.login }}!
 
           ### Select the services you would like to deploy:
 
@@ -119,7 +119,7 @@ jobs:
         run: |
           # create error file
           cat << EOF > error.txt
-          Hello @${{ github.event.comment.user.login }}!
+          ### Hello @${{ github.event.comment.user.login }}!
 
           ### No services checked or service list not found!
 
@@ -175,7 +175,7 @@ jobs:
         run: |
           # service file
           cat << EOF > service.txt
-          Hello @${{ github.event.comment.user.login }}!
+          ### Hello @${{ github.event.comment.user.login }}!
 
           ### The following services will be deployed:
 
