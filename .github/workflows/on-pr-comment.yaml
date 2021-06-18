@@ -118,7 +118,6 @@ jobs:
       - name: check if services are checked
         run: |
           # exit workflow if there are no services checked
-          echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0'
           if [ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ];
           then
             # send thumbs down reaction to /deploy-services indicating failure
@@ -135,9 +134,10 @@ jobs:
             No services checked or service list not found!
 
             Please check at least one service from the service list.
-            Or comment `/list-services` to list the available services.
+            Or comment /list-services to list the available services.
             EOF
 
+            # coment error message
             curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
@@ -156,7 +156,7 @@ jobs:
             -X POST \
             -d '{"content":"rocket"}' \
             -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-            -H "Authorization: token ${{github.token}}"            
+            -H "Authorization: token ${{github.token}}"
 
       - name: creating message file
         run: |
