@@ -20,22 +20,22 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/list-services') }}
     steps:
-      # - # show github context
-      #   name: show context
-      #   run: |
-      #     cat >/dev/null <<'END'
-      #       ${{ toJson(github) }}
-      #     END
+      - # show github context
+        name: show context
+        run: |
+          cat >/dev/null <<'END'
+            ${{ toJson(github) }}
+          END
 
-      # - # react to list comment with eyes
-      #   name: add reation to comment
-      #   run: |
-      #     # send reaction to comment to show build was triggered
-      #     curl ${{github.event.comment.url}}/reactions \
-      #       -X POST \
-      #       -d '{"content":"eyes"}' \
-      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-      #       -H "Authorization: token ${{github.token}}"
+      - # react to list comment with eyes
+        name: add reation to comment
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"eyes"}' \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
@@ -93,12 +93,12 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/deploy-services') }}
     steps:
-      # - # show github context
-      #   name: show context
-      #   run: |
-      #     cat >/dev/null <<'END'
-      #       ${{ toJson(github) }}
-      #     END
+      - # show github context
+        name: show context
+        run: |
+          cat >/dev/null <<'END'
+            ${{ toJson(github) }}
+          END
 
       - # find the service list and parse the services to be deployed
         name: find Comment
@@ -157,15 +157,15 @@ jobs:
           [ -e error.txt ] && rm error.txt
           [ -e error_message.json ] && rm error_message.json
 
-      # - # react to deploy comment with rocket
-      #   name: add reation to comment
-      #   run: |
-      #     # send reaction to comment to show build was triggered
-      #     curl ${{github.event.comment.url}}/reactions \
-      #       -X POST \
-      #       -d '{"content":"rocket"}' \
-      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-      #       -H "Authorization: token ${{github.token}}"
+      - # react to deploy comment with rocket
+        name: add reation to comment
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"rocket"}' \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
@@ -214,22 +214,22 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/delete-services') }}
     steps:
-      # - # show github context
-      #   name: show context
-      #   run: |
-      #     cat >/dev/null <<'END'
-      #       ${{ toJson(github) }}
-      #     END
+      - # show github context
+        name: show context
+        run: |
+          cat >/dev/null <<'END'
+            ${{ toJson(github) }}
+          END
 
-      # - # react to valid comment with thumbs up
-      #   name: add reation to comment
-      #   run: |
-      #     # send reaction to comment to show build was triggered
-      #     curl ${{github.event.comment.url}}/reactions \
-      #       -X POST \
-      #       -d '{"content":"+1"}' \
-      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-      #       -H "Authorization: token ${{github.token}}"
+      - # react to valid comment with thumbs up
+        name: add reation to comment
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"+1"}' \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
@@ -273,22 +273,22 @@ jobs:
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/help') }}
     steps:
-      # - # show github context
-      #   name: show context
-      #   run: |
-      #     cat >/dev/null <<'END'
-      #       ${{ toJson(github) }}
-      #     END
+      - # show github context
+        name: show context
+        run: |
+          cat >/dev/null <<'END'
+            ${{ toJson(github) }}
+          END
 
-      # - # react to valid comment with thumbs up
-      #   name: add reation to comment
-      #   run: |
-      #     # send reaction to comment to show build was triggered
-      #     curl ${{github.event.comment.url}}/reactions \
-      #       -X POST \
-      #       -d '{"content":"+1"}' \
-      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-      #       -H "Authorization: token ${{github.token}}"
+      - # react to valid comment with thumbs up
+        name: add reation to comment
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"+1"}' \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
