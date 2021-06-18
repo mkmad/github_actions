@@ -27,15 +27,15 @@ jobs:
             ${{ toJson(github) }}
           END
 
-      - # react to list comment with eyes
-        name: add reation to comment
-        run: |
-          # send reaction to comment to show build was triggered
-          curl ${{github.event.comment.url}}/reactions \
-            -X POST \
-            -d '{"content":"eyes"}' \
-            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-            -H "Authorization: token ${{github.token}}"
+      # - # react to list comment with eyes
+      #   name: add reation to comment
+      #   run: |
+      #     # send reaction to comment to show build was triggered
+      #     curl ${{github.event.comment.url}}/reactions \
+      #       -X POST \
+      #       -d '{"content":"eyes"}' \
+      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+      #       -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
@@ -157,15 +157,15 @@ jobs:
           [ -e error.txt ] && rm error.txt
           [ -e error_message.json ] && rm error_message.json
 
-      - # react to deploy comment with rocket
-        name: add reation to comment
-        run: |
-          # send reaction to comment to show build was triggered
-          curl ${{github.event.comment.url}}/reactions \
-            -X POST \
-            -d '{"content":"rocket"}' \
-            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-            -H "Authorization: token ${{github.token}}"
+      # - # react to deploy comment with rocket
+      #   name: add reation to comment
+      #   run: |
+      #     # send reaction to comment to show build was triggered
+      #     curl ${{github.event.comment.url}}/reactions \
+      #       -X POST \
+      #       -d '{"content":"rocket"}' \
+      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+      #       -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
@@ -221,15 +221,15 @@ jobs:
             ${{ toJson(github) }}
           END
 
-      - # react to valid comment with thumbs up
-        name: add reation to comment
-        run: |
-          # send reaction to comment to show build was triggered
-          curl ${{github.event.comment.url}}/reactions \
-            -X POST \
-            -d '{"content":"+1"}' \
-            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-            -H "Authorization: token ${{github.token}}"
+      # - # react to valid comment with thumbs up
+      #   name: add reation to comment
+      #   run: |
+      #     # send reaction to comment to show build was triggered
+      #     curl ${{github.event.comment.url}}/reactions \
+      #       -X POST \
+      #       -d '{"content":"+1"}' \
+      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+      #       -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
@@ -280,15 +280,15 @@ jobs:
             ${{ toJson(github) }}
           END
 
-      - # react to valid comment with thumbs up
-        name: add reation to comment
-        run: |
-          # send reaction to comment to show build was triggered
-          curl ${{github.event.comment.url}}/reactions \
-            -X POST \
-            -d '{"content":"+1"}' \
-            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-            -H "Authorization: token ${{github.token}}"
+      # - # react to valid comment with thumbs up
+      #   name: add reation to comment
+      #   run: |
+      #     # send reaction to comment to show build was triggered
+      #     curl ${{github.event.comment.url}}/reactions \
+      #       -X POST \
+      #       -d '{"content":"+1"}' \
+      #       -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+      #       -H "Authorization: token ${{github.token}}"
 
       - # create message file template for comment
         name: creating message file
