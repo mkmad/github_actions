@@ -128,7 +128,7 @@ jobs:
               -H "Authorization: token ${{github.token}}"
 
             # create error file
-            cat << EOF > error.txt
+            cat <<- EOF > error.txt
             Hello @${{ github.event.comment.user.login }}!
 
             No services checked or service list not found!
