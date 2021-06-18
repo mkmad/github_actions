@@ -99,16 +99,6 @@ jobs:
             ${{ toJson(github) }}
           END
 
-      - # react to valid comment with rocket
-        name: add reation to comment
-        run: |
-          # send reaction to comment to show build was triggered
-          curl ${{github.event.comment.url}}/reactions \
-            -X POST \
-            -d '{"content":"rocket"}' \
-            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
-            -H "Authorization: token ${{github.token}}"
-
       - name: find Comment
         uses: peter-evans/find-comment@v1
         id: fc
@@ -121,11 +111,13 @@ jobs:
       - name: print service list comment messages
         run: |
           echo "CommentID: ${{ steps.fc.outputs.comment-id }}"
+          echo: "Services:"
           echo "${{ steps.fc.outputs.comment-body }}"
 
       - name: check if services are checked
         run: |
           # exit workflow if there are no services checked
+          echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0'
           if [[ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ]];
           then
             # create error file
@@ -147,6 +139,16 @@ jobs:
             # remove file            
             rm error.txt
             exit 1
+
+      - # react to valid comment with rocket
+        name: add reation to comment
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"rocket"}' \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Authorization: token ${{github.token}}"            
 
       - name: creating message file
         run: |
