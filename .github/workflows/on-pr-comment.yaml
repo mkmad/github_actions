@@ -117,6 +117,16 @@ jobs:
 
       - name: check if services are checked
         run: |
+          # create error file
+          cat << EOF > error.txt
+          Hello @${{ github.event.comment.user.login }}!
+
+          No services checked or service list not found!
+
+          Please check at least one service from the service list.
+          Or comment /list-services to list the available services.
+          EOF
+
           # exit workflow if there are no services checked
           if [ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ];
           then
@@ -126,16 +136,6 @@ jobs:
               -d '{"content":"-1"}' \
               -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
               -H "Authorization: token ${{github.token}}"
-
-            # create error file
-            cat << EOF > error.txt
-            Hello @${{ github.event.comment.user.login }}!
-
-            No services checked or service list not found!
-
-            Please check at least one service from the service list.
-            Or comment /list-services to list the available services.
-            EOF
 
             # coment error message
             curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
@@ -147,6 +147,8 @@ jobs:
             # remove file and exit workflow
             rm error.txt
             exit 1
+          else
+            rm error.txt
           fi
 
       - # react to valid comment with rocket
