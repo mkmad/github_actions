@@ -238,7 +238,7 @@ jobs:
           cat << EOF > service.txt
           ### Hello @${{ github.event.comment.user.login }}!
 
-          ### The Preview App will be deleted!!!
+          #### The Preview App will be deleted! Thanks for using ChatOps!
           EOF
 
           # message file
