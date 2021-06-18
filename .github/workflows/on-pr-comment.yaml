@@ -111,7 +111,7 @@ jobs:
       - name: print service list comment messages
         run: |
           echo "CommentID: ${{ steps.fc.outputs.comment-id }}"
-          echo: "Services:"
+          echo "Services:"
           echo "${{ steps.fc.outputs.comment-body }}"
 
       - name: check if services are checked
@@ -120,6 +120,13 @@ jobs:
           echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0'
           if [[ echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0' ]];
           then
+            # send thumbs down reaction to /deploy-services indicating failure
+            curl ${{github.event.comment.url}}/reactions \
+              -X POST \
+              -d '{"content":"-1"}' \
+              -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+              -H "Authorization: token ${{github.token}}"            
+
             # create error file
             cat << EOF > error.txt
             Hello @${{ github.event.comment.user.login }}!
@@ -136,7 +143,7 @@ jobs:
               -H "Authorization: token ${{github.token}}" \
               -d '{"body": "$(cat error.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"}'
             
-            # remove file            
+            # remove file and exit workflow           
             rm error.txt
             exit 1
 
