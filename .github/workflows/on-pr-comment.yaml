@@ -128,7 +128,7 @@ jobs:
           EOF
 
           # exit workflow if there are no services checked
-          if [ $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0) == 0' ];
+          if [ $(echo "${{ steps.fc.outputs.comment-body }}" | grep 'x' | wc -l | awk -F: '$NF+0 == 0') ];
           then
             # send thumbs down reaction to /deploy-services indicating failure
             curl ${{github.event.comment.url}}/reactions \
