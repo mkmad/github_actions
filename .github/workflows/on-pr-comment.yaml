@@ -121,7 +121,7 @@ jobs:
           cat << EOF > error.txt
           Hello @${{ github.event.comment.user.login }}!
 
-          /### No services checked or service list not found!
+          ### No services checked or service list not found!
 
           Please check at least one service from the service list.
           Or comment _/list-services_ to list the available services.
