@@ -124,7 +124,7 @@ jobs:
           No services checked or service list not found!
 
           Please check at least one service from the service list.
-          Or comment /`//list-services/` to list the available services.
+          Or comment '`/list-services`' to list the available services.
           EOF
 
           # create error json file
