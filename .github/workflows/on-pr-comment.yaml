@@ -402,7 +402,8 @@ jobs:
           cat << EOF > service.txt
           ### Hello!
 
-          kubeconfig for the preview app cluster is generated. 
+          #### kubeconfig for the preview app cluster is generated.
+
           Download this kubeconfig file by commenting /download-config in this PR
           EOF
           
@@ -448,13 +449,20 @@ jobs:
           END
       
       - # download kubeconfig artifact
-        name: get artifact id
+        name: get artifact file
         run: |
-          # get artifact id
+          # get artifact file
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
             https://api.github.com/repos/mkmad/github_actions/actions/artifacts >> artifacts.txt
 
-          cat artifacts.txt | grep '"id":' | awk '{print $2}' | sed 's/,//'
-          rm artifacts.txt
+          cat artifacts.txt
+
+      - # generate kubeconfig artifact download link
+        name: generate kubeconfig artifact download link
+          curl \
+            -H "Accept:application/vnd.github.v3+json" \
+            -H "Authorization:token ${{github.token}}" \
+            $(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//')
+          
