@@ -377,7 +377,9 @@ jobs:
           
           e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
 
+          ```
           $(echo ${{ github.event.inputs.kube_context }} | base64 --decode)
+          ```
           EOF
           
           # message file
@@ -389,9 +391,10 @@ jobs:
           
       - # list all the help commands via comment
         name: comment kubeconfig file
+        if: success()
         run: |
           # comment on the pr to list the sevices to be deployed
-          curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
+          curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.inputs.issue_number}}/comments" \
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{github.token}}" \
