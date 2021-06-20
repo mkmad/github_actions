@@ -8,6 +8,7 @@ name: pr-chatops
 # TODO: comment back the github action console URL for tracking
 # TODO: code cleanup, see if you can use env vars, better json files etc
 # TODO: implement serial execution, currenty the jobs are parallel
+# TODO: add status flag to show the current status of deployment
 
 on:
   issue_comment:
@@ -351,7 +352,7 @@ jobs:
   kube-service:
     # list kube context of a virtual cluster
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
       - # show github context
         name: show context
@@ -359,3 +360,19 @@ jobs:
           cat >/dev/null <<'END'
             ${{ toJson(github) }}
           END
+          
+      - # create kubeconfig file
+        name: create kube config file
+        if: ${{ github.event.inputs.kube_context }}
+        run: |
+          # generating kubeconfig file from base64 string
+          echo ${{ github.event.inputs.kube_context }} >> kubeconfig.yaml
+          cat kubeconfig.yaml
+          
+      - # upload kubeconfig artifact
+        name: upload kube config artifact
+        if: ${{ success() }}        
+        uses: actions/upload-artifact@v2
+        with:
+          name: kube-config
+          path: kubeconfig.yaml
