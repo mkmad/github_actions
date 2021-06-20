@@ -411,7 +411,7 @@ jobs:
           {
             "body": "$(cat service.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
           }
-          EOF          
+          EOF
           
       - # list all the help commands via comment
         name: comment kubeconfig file
