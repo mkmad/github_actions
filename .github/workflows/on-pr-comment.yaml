@@ -362,17 +362,33 @@ jobs:
           END
           
       - # create kubeconfig file
-        name: create kube config file
+        name: create kube config file and comment message file
         if: ${{ github.event.inputs.kube_context }}
         run: |
           # generating kubeconfig file from base64 string
-          echo ${{ github.event.inputs.kube_context }} >> kubeconfig.yaml
-          cat kubeconfig.yaml
+          echo ${{ github.event.inputs.kube_context }} | base64 --decode >> kubeconfig.yaml
+
+          # message file
+          cat << EOF > message.json
+          {
+            "body": "$(cat kubeconfig.yaml | sed 's/$/\\n/' | tr '\n' ' ';echo)"
+          }
+          EOF          
           
-      - # upload kubeconfig artifact
-        name: upload kube config artifact
-        if: ${{ success() }}        
-        uses: actions/upload-artifact@v2
-        with:
-          name: kube-config
-          path: kubeconfig.yaml
+      - # list all the help commands via comment
+        name: comment all help commands
+        run: |
+          # comment on the pr to list the sevices to be deployed
+          curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{github.token}}" \
+            --data-binary "@message.json"
+
+      - # remove comment template files
+        name: remove service and message files
+        run: |
+          echo "Removing service file: skubeconfig.yaml"
+          [ -e kubeconfig.yaml ] && rm kubeconfig.yaml
+          echo "Removing comment payload file: message.json"
+          [ -e message.json ] && rm message.json
