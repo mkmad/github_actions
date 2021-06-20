@@ -22,6 +22,7 @@ on:
         description: 'pull request number'
         required: true
 
+
 jobs:
   list-service:
     # list all services in the form of a checklist
@@ -95,6 +96,7 @@ jobs:
           [ -e service.txt ] && rm service.txt
           echo "Removing comment payload file: message.json"
           [ -e message.json ] && rm message.json
+
 
   deploy-service:
     # deploy all services from the checklist
@@ -226,6 +228,7 @@ jobs:
           echo "Removing comment payload file: message.json"
           [ -e message.json ] && rm message.json
 
+
   delete-service:
     # list all services in the form of a checklist
     runs-on: ubuntu-latest
@@ -285,6 +288,7 @@ jobs:
           echo "Removing comment payload file: message.json"
           [ -e message.json ] && rm message.json
 
+
   help-service:
     # list all services in the form of a checklist
     runs-on: ubuntu-latest
@@ -323,6 +327,7 @@ jobs:
           * /list-services   ( To list all the available services)
           * /deploy-services ( To deploy the selected services)
           * /delete-services ( To delete the preview app )
+          * /download-config ( download the kubeconfig for preview app if exists)
           * /help            ( To list all the available chatops commands)
 
           EOF
@@ -352,7 +357,8 @@ jobs:
           echo "Removing comment payload file: message.json"
           [ -e message.json ] && rm message.json
 
-  kube-service:
+
+  kube-artifact-service:
     # list kube context of a virtual cluster
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -363,25 +369,42 @@ jobs:
           cat >/dev/null <<'END'
             ${{ toJson(github) }}
           END
-          
+
+      - # delete previous artifacts
+        name: Delete Artifact by Name
+        if: ${{ github.event.inputs.kube_context }} && ${{ github.event.inputs.issue_number }}
+        uses: jimschubert/delete-artifacts-action@v1
+        with:
+          log_level: 'debug'
+          artifact_name: 'kubeconfig_${{ github.event.inputs.issue_number }}'
+          min_bytes: '0'          
+
       - # create kubeconfig file
         name: create kube config file and comment message file
         if: ${{ github.event.inputs.kube_context }} && ${{ github.event.inputs.issue_number }}
         run: |
-          # generating kubeconfig file from base64 string
+          # generate kubeconfig file by converting the base64 string
+          echo ${{ github.event.inputs.kube_context }} | base64 --decode  >> kubeconfig.yaml
+
+      - # upload the kubeconfig file as an artifact
+        name: upload kubeconfig as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: kubeconfig_${{ github.event.inputs.issue_number }}
+          path: kubeconfig.yaml
+          
+      - # let devs know that the kubeconfig is ready
+        name: create kubeconfig ready message
+        if: success()
+        run: |
+          # generating kubeconfig ready message
 
           cat << EOF > service.txt
           ### Hello!
 
-          #### Download this kubeconfig file as interact with the cluster as follows:
+          kubeconfig for the preview app cluster is generated. 
+          Download this kubeconfig file by commenting /download-config in this PR
           
-          e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
-          EOF
-
-          echo ${{ github.event.inputs.kube_context }} | base64 --decode  >> service.txt
-          
-          cat service.txt
-
           # message file
           cat << EOF > message.json
           {
@@ -407,3 +430,30 @@ jobs:
           [ -e service.txt ] && rm service.txt
           echo "Removing comment payload file: message.json"
           [ -e message.json ] && rm message.json
+
+
+  download-service:
+    # list all services in the form of a checklist
+    runs-on: ubuntu-latest
+    if: ${{ github.event.comment &&
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/download-config') }}
+    steps:
+      - # show github context
+        name: show context
+        run: |
+          cat >/dev/null <<'END'
+            ${{ toJson(github) }}
+          END
+      
+      - # download kubeconfig artifact
+        name: get artifact id
+        run: |
+          # get artifact id
+          curl \
+            -H "Accept:application/vnd.github.v3+json" \
+            -H "Authorization:token ${{github.token}}" \
+            https://api.github.com/repos/mkmad/github_actions/actions/artifacts >> artifacts.txt
+
+          cat artifacts.txt | grep '"id":' | awk '{print $2}' | sed 's/,//'
+          rm artifacts.txt
