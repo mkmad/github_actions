@@ -376,11 +376,9 @@ jobs:
           #### Download this kubeconfig file as interact with the cluster as follows:
           
           e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
-
-          ```
-            $(echo ${{ github.event.inputs.kube_context }} | base64 --decode )
-          ```
           EOF
+
+          echo ${{ github.event.inputs.kube_context }} | base64 --decode  > service.txt
           
           # message file
           cat << EOF > message.json
