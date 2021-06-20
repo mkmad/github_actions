@@ -366,8 +366,18 @@ jobs:
         if: ${{ github.event.inputs.kube_context }}
         run: |
           # generating kubeconfig file from base64 string
-          echo ${{ github.event.inputs.kube_context }} | base64 --decode >> kubeconfig.yaml
 
+          cat << EOF > service.txt
+          ### Hello @${{ github.event.comment.user.login }}!
+
+          #### Download this kubeconfig file as interact with the cluster as follows:
+          
+            e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
+
+          $(echo ${{ github.event.inputs.kube_context }} | base64 --decode)
+
+          EOF
+          
           # message file
           cat << EOF > message.json
           {
@@ -376,7 +386,7 @@ jobs:
           EOF          
           
       - # list all the help commands via comment
-        name: comment all help commands
+        name: comment kubeconfig file
         run: |
           # comment on the pr to list the sevices to be deployed
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.issue.number}}/comments" \
@@ -388,7 +398,7 @@ jobs:
       - # remove comment template files
         name: remove service and message files
         run: |
-          echo "Removing service file: skubeconfig.yaml"
-          [ -e kubeconfig.yaml ] && rm kubeconfig.yaml
+          echo "Removing service file: service.txt"
+          [ -e service.txt ] && rm service.txt
           echo "Removing comment payload file: message.json"
           [ -e message.json ] && rm message.json
