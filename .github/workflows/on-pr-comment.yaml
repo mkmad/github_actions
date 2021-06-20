@@ -378,7 +378,7 @@ jobs:
           e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
 
           ```
-            ${{ github.event.inputs.kube_context }} | base64 --decode
+            $(echo ${{ github.event.inputs.kube_context }} | base64 --decode )
           ```
           EOF
           
