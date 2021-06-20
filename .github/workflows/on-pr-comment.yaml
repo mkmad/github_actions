@@ -371,14 +371,14 @@ jobs:
           # generating kubeconfig file from base64 string
 
           cat << EOF > service.txt
-          ### Hello @${{ github.event.comment.user.login }}!
+          ### Hello!
 
           #### Download this kubeconfig file as interact with the cluster as follows:
           
           e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
 
           ```
-          $(echo ${{ github.event.inputs.kube_context }} | base64 --decode)
+          '$(echo ${{ github.event.inputs.kube_context }} | base64 --decode)'
           ```
           EOF
           
