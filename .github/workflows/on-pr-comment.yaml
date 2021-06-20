@@ -378,10 +378,10 @@ jobs:
           e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
           EOF
 
-          echo ${{ github.event.inputs.kube_context }} | base64 --decode  > service.txt
+          echo ${{ github.event.inputs.kube_context }} | base64 --decode  >> service.txt
           
           cat service.txt
-          
+
           # message file
           cat << EOF > message.json
           {
