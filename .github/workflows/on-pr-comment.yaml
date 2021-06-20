@@ -18,6 +18,9 @@ on:
       kube_context:
         description: 'Kube context of the virtual cluster'
         required: true
+      issue_number:
+        description: 'pull request number'
+        required: true
 
 jobs:
   list-service:
@@ -363,7 +366,7 @@ jobs:
           
       - # create kubeconfig file
         name: create kube config file and comment message file
-        if: ${{ github.event.inputs.kube_context }}
+        if: ${{ github.event.inputs.kube_context }} && ${{ github.event.inputs.issue_number }}
         run: |
           # generating kubeconfig file from base64 string
 
@@ -372,16 +375,15 @@ jobs:
 
           #### Download this kubeconfig file as interact with the cluster as follows:
           
-            e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
+          e.g. kubectl --kubeconfig <kubeconfig.yaml> get namespace
 
           $(echo ${{ github.event.inputs.kube_context }} | base64 --decode)
-
           EOF
           
           # message file
           cat << EOF > message.json
           {
-            "body": "$(cat kubeconfig.yaml | sed 's/$/\\n/' | tr '\n' ' ';echo)"
+            "body": "$(cat service.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
           }
           EOF          
           
