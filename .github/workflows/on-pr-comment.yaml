@@ -324,11 +324,11 @@ jobs:
 
           Comment the following to trigger ChatOps bot:
 
-          * /list-services   ( To list all the available services)
-          * /deploy-services ( To deploy the selected services)
-          * /delete-services ( To delete the preview app )
-          * /download-config ( download the kubeconfig for preview app if exists)
-          * /help            ( To list all the available chatops commands)
+          * /list-services         ( To list all the available services)
+          * /deploy-services       ( To deploy the selected services)
+          * /delete-services       ( To delete the preview app )
+          * /download--kube-config ( download the kubeconfig for preview app if exists)
+          * /help                  ( To list all the available chatops commands)
 
           EOF
 
@@ -439,7 +439,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.comment &&
       github.event.issue.pull_request &&
-      startsWith(github.event.comment.body, '/download-config') }}
+      startsWith(github.event.comment.body, '/download-kube-config') }}
     steps:
       - # show github context
         name: show context
@@ -467,4 +467,5 @@ jobs:
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
-            $(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//')
+            echo $(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//') \
+            -I | grep "location" | awk '{print $2}'
