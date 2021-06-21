@@ -449,23 +449,65 @@ jobs:
           END
       
       - # download kubeconfig artifact
-        name: get artifact file
+        name: get artifact id
         run: |
-          # get artifact file
+          # get artifact id
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
-            https://api.github.com/repos/mkmad/github_actions/actions/artifacts >> artifacts.txt
+            https://api.github.com/repos/mkmad/github_actions/actions/artifacts \
+            | grep '"id":' | awk '{print $2}' | sed 's/,//' >> artifact_id.txt
 
-          cat artifacts.txt
+          cat artifact_id.txt
+
+      - # generate service file
+        name: artifact download service file
+        run: |
+          # generating artifact download ready message
+
+          cat << EOF > artifact_service.txt
+          ### Hello!
+
+          #### Kubeconfig download is ready.
+
+          **NOTE: This link will expire in 30s**
+          ** If you need to regenerate the link comment: /download--kube-config again***
+          EOF
 
       - # generate kubeconfig artifact download link
         name: generate kubeconfig artifact download link
         run: |
-          cat artifacts.txt | grep '"id":' | awk '{print $2}' | sed 's/,//' >> artifact_id.txt
-
+          # get download link
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
             https://api.github.com/repos/mkmad/github_actions/actions/artifacts/$(cat artifact_id.txt)/zip \
-            -I | grep "location" | awk '{print $2}'
+            -I | grep "location" | awk '{print $2}' >> artifact_download_link.txt
+
+          echo "click [here]($(cat artifact_download_link.txt)) to download your kubeconfig" >> artifact_service.txt
+
+          # message file
+          cat << EOF > message.json
+          {
+            "body": "$(cat artifact_service.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
+          }
+          EOF
+
+      - # comment the artifact download link back to the user
+        name: comment kubeconfig file
+        if: success()
+        run: |
+          # comment on the pr to list the sevices to be deployed
+          curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.inputs.issue_number}}/comments" \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{github.token}}" \
+            --data-binary "@message.json"
+
+      - # remove comment template files
+        name: remove service and message files
+        run: |
+          echo "Removing service file: artifact_service.txt"
+          [ -e artifact_service.txt ] && rm artifact_service.txt
+          echo "Removing comment payload file: message.json"
+          [ -e message.json ] && rm message.json            
