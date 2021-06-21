@@ -1,1 +1,0 @@
-https://pipelines.actions.githubusercontent.com/nZdWUgOcIhlsUZpbxwuhgSubCyPYn7mq85f3B2EIo12nlGg23A/_apis/pipelines/1/runs/421/signedartifactscontent?artifactName=kubeconfig_72&urlExpires=2021-06-21T06%3A18%3A19.3996338Z&urlSigningMethod=HMACV1&urlSignature=MstCrXFt9lXqeLU2fpKcEdFNooubMzBHDOhb27xY4zU%3D
