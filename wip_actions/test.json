@@ -1,3 +1,1 @@
-{
-  "body": "### Hello @mkmad!\n \n #### Kubeconfig artifact is ready.\n \n **NOTE: This link will expire in 30s**\n ** If you need to regenerate the link comment: /download--kube-config again***\n \n click [here](https://pipelines.actions.githubusercontent.com/nZdWUgOcIhlsUZpbxwuhgSubCyPYn7mq85f3B2EIo12nlGg23A/_apis/pipelines/1/runs/421/signedartifactscontent?artifactName=kubeconfig_72&urlExpires=2021-06-21T01%3A46%3A09.3228506Z&urlSigningMethod=HMACV1&urlSignature=MjkyQ9YOm%2FfwmfM3ScTGrEtgRxt%2FvFvc4BJza17fqHY%3D) to download your kubeconfig\n"
-}
+https://pipelines.actions.githubusercontent.com/nZdWUgOcIhlsUZpbxwuhgSubCyPYn7mq85f3B2EIo12nlGg23A/_apis/pipelines/1/runs/421/signedartifactscontent?artifactName=kubeconfig_72&urlExpires=2021-06-21T05%3A36%3A42.6562095Z&urlSigningMethod=HMACV1&urlSignature=G1362I93mIQu52Raj2pg9DXB5NKwxWARSolFqMTOZN4%3D
