@@ -478,7 +478,7 @@ jobs:
           ## Kubeconfig artifact is ready.
           
           **NOTE: This link will expire in 30s, Please comment \
-          **_/download-kube-config_** in this pr again for a new link.**
+          **_/download-kube-config_** in this pr again to get a new link.**
 
           EOF
 
