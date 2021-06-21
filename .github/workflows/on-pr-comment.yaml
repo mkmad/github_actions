@@ -497,7 +497,7 @@ jobs:
           
           cat artifact_download_link.txt
 
-          echo "**click [here]($(cat artifact_download_link.txt | tr -d '\n' )) to download your kubeconfig**" >> artifact_service.txt
+          echo "**click [here]($(cat artifact_download_link.txt)) to download your kubeconfig**" >> artifact_service.txt
 
           # message file
           cat << EOF > message.json
