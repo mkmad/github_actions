@@ -476,12 +476,13 @@ jobs:
           # generating artifact download ready message
 
           cat << EOF > artifact_service.txt
-          ### Hello!
+          ### Hello @${{ github.event.comment.user.login }}!
 
-          #### Kubeconfig download is ready.
+          #### Kubeconfig artifact is ready.
 
           **NOTE: This link will expire in 30s**
           ** If you need to regenerate the link comment: /download--kube-config again***
+
           EOF
 
       - # generate kubeconfig artifact download link
@@ -497,13 +498,15 @@ jobs:
           echo "click [here]($(cat artifact_download_link.txt)) to download your kubeconfig" >> artifact_service.txt
 
           cat artifact_service.txt
-          
+
           # message file
           cat << EOF > message.json
           {
             "body": "$(cat artifact_service.txt | sed 's/$/\\n/' | tr '\n' ' ';echo)"
           }
           EOF
+
+          cat message.json
 
       - # comment the artifact download link back to the user
         name: comment kubeconfig file
