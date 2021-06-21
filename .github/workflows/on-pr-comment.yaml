@@ -447,6 +447,16 @@ jobs:
           cat >/dev/null <<'END'
             ${{ toJson(github) }}
           END
+
+      - # react to valid comment with thumbs up
+        name: add reation to comment
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"+1"}' \
+            -H "Accept: application/vnd.github.squirrel-girl-preview+json" \
+            -H "Authorization: token ${{github.token}}"          
       
       - # download kubeconfig artifact
         name: get artifact id
@@ -486,6 +496,8 @@ jobs:
 
           echo "click [here]($(cat artifact_download_link.txt)) to download your kubeconfig" >> artifact_service.txt
 
+          cat artifact_service.txt
+          
           # message file
           cat << EOF > message.json
           {
