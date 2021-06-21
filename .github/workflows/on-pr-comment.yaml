@@ -462,10 +462,11 @@ jobs:
       - # generate kubeconfig artifact download link
         name: generate kubeconfig artifact download link
         run: |
-          echo $(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//')
-
+          echo $ARTIFACT_URL
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
-            "$(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//')" \
+            $ARTIFACT_URL \
             -I | grep "location" | awk '{print $2}'
+        env:
+          ARTIFACT_URL: $(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//')
