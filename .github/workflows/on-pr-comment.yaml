@@ -467,5 +467,5 @@ jobs:
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
-            echo $(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//') \
+            "$(cat artifacts.txt | grep "archive_download_url" | awk '{print $2}' | sed 's/,//')" \
             -I | grep "location" | awk '{print $2}'
