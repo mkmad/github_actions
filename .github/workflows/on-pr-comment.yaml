@@ -403,7 +403,7 @@ jobs:
 
           #### kubeconfig for the preview app cluster is generated.
 
-          Download this kubeconfig file by commenting /download-config in this PR
+          Download this kubeconfig file by commenting /download-kube-config in this PR
           EOF
           
           # message file
@@ -465,7 +465,7 @@ jobs:
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
             https://api.github.com/repos/mkmad/github_actions/actions/artifacts \
-            | grep '"id":' | awk '{print $2}' | sed 's/,//' >> artifact_id.txt
+            | grep "kubeconfig_${{github.event.issue.number}}" -B 2 | grep '"id":' | awk '{print $2}' | sed 's/,//' >> artifact_id.txt
 
           cat artifact_id.txt
 
