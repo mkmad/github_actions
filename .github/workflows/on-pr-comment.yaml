@@ -495,8 +495,6 @@ jobs:
             https://api.github.com/repos/mkmad/github_actions/actions/artifacts/$(cat artifact_id.txt)/zip \
             -I | grep "location" | awk '{print $2}' >> artifact_download_link.txt
           
-          cat artifact_download_link.txt
-
           echo "**click [here]($(cat artifact_download_link.txt)) to download your kubeconfig**" >> artifact_service.txt
 
           # message file
@@ -506,6 +504,7 @@ jobs:
           }
           EOF
 
+          cat artifact_service.txt
           cat message.json
 
       - # comment the artifact download link back to the user
