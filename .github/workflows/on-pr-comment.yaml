@@ -502,7 +502,7 @@ jobs:
           # message file
           cat << EOF > message.json
           {
-            "body": "$(cat artifact_service.txt | sed 's/$/\\n/')"
+            "body": "$(cat artifact_service.txt)"
           }
           EOF
 
