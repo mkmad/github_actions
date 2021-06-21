@@ -467,8 +467,6 @@ jobs:
             https://api.github.com/repos/mkmad/github_actions/actions/artifacts \
             | grep "kubeconfig_${{github.event.issue.number}}" -B 2 | grep '"id":' | awk '{print $2}' | sed 's/,//' >> artifact_id.txt
 
-          cat artifact_id.txt
-
       - # generate service file
         name: artifact download service file
         run: |
@@ -477,11 +475,10 @@ jobs:
           cat << EOF > artifact_service.txt
           ### Hello @${{ github.event.comment.user.login }}!
 
-          ### Kubeconfig artifact is ready.
+          ## Kubeconfig artifact is ready.
           
-          **NOTE: This link will expire in 30s**
-          **If you need to regenerate the link comment:**
-          ***/download--kube-config***
+          **NOTE: This link will expire in 30s, Please comment \
+          **_/download-kube-config_** in this pr again for a new link.**
 
           EOF
 
@@ -494,7 +491,7 @@ jobs:
             -H "Authorization:token ${{github.token}}" \
             https://api.github.com/repos/mkmad/github_actions/actions/artifacts/$(cat artifact_id.txt)/zip \
             -I | grep "location" | awk '{print $2}' | tr -d '\r' >> artifact_download_link.txt
-          echo "**click [here]($(cat artifact_download_link.txt | sed 's/$/\\n/' )) to download your kubeconfig**" >> artifact_service.txt
+          echo "**click [here]($(cat artifact_download_link.txt | sed 's/$/\\n/' )) to download your kubeconfig.**" >> artifact_service.txt
 
           # message file
           cat << EOF > message.json
@@ -502,10 +499,6 @@ jobs:
             "body": "$(cat artifact_service.txt | sed 's/$/\\n/' | tr '\n' ' ')"
           }
           EOF
-
-          cat artifact_download_link.txt
-          cat artifact_service.txt
-          cat message.json
 
       - # comment the artifact download link back to the user
         name: comment kubeconfig file
