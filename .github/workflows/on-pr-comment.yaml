@@ -5,6 +5,7 @@ name: pr-chatops
 # TODO: check if service is already deleted it being deleted
 # TODO: show some kind of status updates regarding the state of deployment
 # TODO: spike if Jenkins can trigger an update back to the PR to say deployment/termination is complete
+# TODO: test passing if services to jenkins as params
 # TODO: comment back the github action console URL for tracking
 # TODO: code cleanup, see if you can use env vars, better json files etc
 # TODO: add status flag to show the current status of deployment
@@ -219,13 +220,25 @@ jobs:
             -H "Authorization: token ${{github.token}}" \
             --data-binary "@message.json"
 
+      - # trigger jenkins workflow and pass all the services for deployment
+        name: trigger jenkins workflow
+        if:  ${{ secrets.JENKINS_URL && secrets.JENKINS_USER && secrets.JENKINS_TOKEN }}
+        uses: toptal/jenkins-job-trigger-action@master
+        with:
+          jenkins_url: ${{ secrets.JENKINS_URL }}
+          jenkins_user: ${{ secrets.JENKINS_USER }}
+          jenkins_token: ${{ secrets.JENKINS_TOKEN }}
+          job_name: "preview-app-pipeline-job"
+          job_params: '{"param_1":"value_1", "param_2":"value_2"}'
+          job_timeout: "3600" # Default 30 sec. (optional)
+
       - # remove comment template files
         name: remove service and message files
         run: |
           echo "Removing service file: service.txt"
           [ -e service.txt ] && rm service.txt
           echo "Removing comment payload file: message.json"
-          [ -e message.json ] && rm message.json
+          [ -e message.json ] && rm message.json          
 
 
   delete-service:
@@ -358,7 +371,8 @@ jobs:
 
 
   kube-artifact-service:
-    # list kube context of a virtual cluster
+    # this service handles dispatch requests from Jenkins
+    # upload kubeconfig of virtual cluster as an artifact
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
@@ -399,11 +413,11 @@ jobs:
           # generating kubeconfig ready message
 
           cat << EOF > service.txt
-          ### Hello!
+          ### Hello from Jenkins!
 
           #### kubeconfig for the preview app cluster is generated.
 
-          Download this kubeconfig file by commenting /download-kube-config in this PR
+          To download this kubeconfig file by commenting /download-kube-config in this PR
           EOF
           
           # message file
@@ -413,7 +427,7 @@ jobs:
           }
           EOF
           
-      - # comment on pr to denote kubeconfig file is ready
+      - # comment on pr, stating kubeconfig file is ready
         name: comment kubeconfig file
         if: success()
         run: |
@@ -434,7 +448,7 @@ jobs:
 
 
   download-service:
-    # list all services in the form of a checklist
+    # download kubeconfig of a virtual cluster
     runs-on: ubuntu-latest
     if: ${{ github.event.comment &&
       github.event.issue.pull_request &&
@@ -517,4 +531,5 @@ jobs:
           echo "Removing service file: artifact_service.txt"
           [ -e artifact_service.txt ] && rm artifact_service.txt
           echo "Removing comment payload file: message.json"
-          [ -e message.json ] && rm message.json            
+          [ -e message.json ] && rm message.json
+       
