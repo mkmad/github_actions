@@ -339,7 +339,7 @@ jobs:
           * /list-services         ( To list all the available services)
           * /deploy-services       ( To deploy the selected services)
           * /delete-services       ( To delete the preview app )
-          * /download--kube-config ( download the kubeconfig for preview app if exists)
+          * /download-kube-config ( download the kubeconfig for preview app if exists)
           * /help                  ( To list all the available chatops commands)
 
           EOF
