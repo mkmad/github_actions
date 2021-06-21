@@ -478,7 +478,7 @@ jobs:
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
-            https://api.github.com/repos/mkmad/github_actions/actions/artifacts \
+            https://api.github.com/repos/${{github.repository}}/actions/artifacts \
             | grep "kubeconfig_${{github.event.issue.number}}" -B 2 | grep '"id":' | awk '{print $2}' | sed 's/,//' >> artifact_id.txt
 
       - # generate service file
@@ -503,7 +503,7 @@ jobs:
           curl \
             -H "Accept:application/vnd.github.v3+json" \
             -H "Authorization:token ${{github.token}}" \
-            https://api.github.com/repos/mkmad/github_actions/actions/artifacts/$(cat artifact_id.txt)/zip \
+            https://api.github.com/repos/${{github.repository}}/actions/artifacts/$(cat artifact_id.txt)/zip \
             -I | grep "location" | awk '{print $2}' | tr -d '\r' >> artifact_download_link.txt
           echo "**click [here]($(cat artifact_download_link.txt | sed 's/$/\\n/' )) to download your kubeconfig.**" >> artifact_service.txt
 
