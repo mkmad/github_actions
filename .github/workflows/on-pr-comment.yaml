@@ -504,7 +504,7 @@ jobs:
           }
           EOF
 
-          cat artifact_service.txt
+          cat artifact_download_link.txt
           cat message.json
 
       - # comment the artifact download link back to the user

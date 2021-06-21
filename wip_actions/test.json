@@ -1,1 +1,10 @@
-https://pipelines.actions.githubusercontent.com/nZdWUgOcIhlsUZpbxwuhgSubCyPYn7mq85f3B2EIo12nlGg23A/_apis/pipelines/1/runs/421/signedartifactscontent?artifactName=kubeconfig_72&urlExpires=2021-06-21T05%3A36%3A42.6562095Z&urlSigningMethod=HMACV1&urlSignature=G1362I93mIQu52Raj2pg9DXB5NKwxWARSolFqMTOZN4%3D
+### Hello @mkmad!
+
+### Kubeconfig artifact is ready.
+
+**NOTE: This link will expire in 30s**
+**If you need to regenerate the link comment:**
+***/download--kube-config***
+
+**click [here](https://pipelines.actions.githubusercontent.com/nZdWUgOcIhlsUZpbxwuhgSubCyPYn7mq85f3B2EIo12nlGg23A/_apis/pipelines/1/runs/421/signedartifactscontent?artifactName=kubeconfig_72&urlExpires=2021-06-21T05%3A46%3A39.3596431Z&urlSigningMethod=HMACV1&urlSignature=MDTYpOQxpqOc0gjkjB8zT2sK1B3jnMcLvKMfvSbmoGw%3D
+) to download your kubeconfig**
