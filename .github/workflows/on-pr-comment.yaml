@@ -506,18 +506,19 @@ jobs:
           }
           EOF
 
-          cat message.json
 
       - # comment the artifact download link back to the user
         name: comment kubeconfig file
         if: success()
         run: |
           # comment on the pr to list the sevices to be deployed
+          cat message.json
+
           curl  "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.inputs.issue_number}}/comments" \
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{github.token}}" \
-            --data-binary "@message.json"
+            --data-binary "@message.json" -vvvv
 
       - # remove comment template files
         name: remove service and message files
