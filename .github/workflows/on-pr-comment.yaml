@@ -227,7 +227,7 @@ jobs:
       #   with:
       #     jenkins_url: "http://35.184.152.247"
       #     jenkins_user: "admin"
-      #     jenkins_token: "11845b44be2058509a3adb51c7e6f98bfa"
+      #     jenkins_token: ""
       #     job_name: "preview-app-pipeline-job"
       #     job_params: '{"token":"eg3csu7gqm", "branch":"preview_app_pipeline"}'
       #     job_timeout: "3600" # Default 30 sec. (optional)
